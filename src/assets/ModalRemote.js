@@ -20,6 +20,7 @@ function ModalRemote(modalId) {
         loadingTitle: "Loading"
     };
 
+
     this.modal = $(modalId);
 
     this.dialog = $(modalId).find('.modal-dialog');
@@ -32,6 +33,7 @@ function ModalRemote(modalId) {
 
     this.loadingContent = '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>';
 
+    this.attribute = null;
 
     /**
      * Show the modal
@@ -223,6 +225,13 @@ function ModalRemote(modalId) {
             }
         }
 
+        //Update select2 field if dataId is present on response
+        if (this.attribute && response.dataId) {
+            var x = $('#'+this.attribute);
+            x.prepend('<option value="'+response.dataId+'">'+response.dataText+'</option>');
+            x.val(response.dataId).trigger('change');
+        }
+
         // Close modal if response contains forceClose field
         if (response.forceClose !== undefined && response.forceClose) {
             this.hide();
@@ -361,9 +370,23 @@ function ModalRemote(modalId) {
      *   - title                 (string/html title of modal box)
      *   - content               (string/html content in modal box)
      *   - footer                (string/html footer of modal box)
+     *   - attribute             (string create/update attribute - CRUD)
+     *   - type                  (string create or update)
      * @params {elm}
      */
     this.open = function (elm, bulkData) {
+
+        var href = $(elm).attr('href');
+
+        if ($(elm).hasAttr('attribute')) {
+            this.attribute = $(elm).attr('attribute');
+
+            if ($(elm).hasAttr('type') &&  $(elm).attr('type') == 'update') {
+                var attributeField =  '#'+$(elm).attr('attribute');
+                href += '&id='+$(attributeField).val();
+            }
+        }
+
         /**
          * Show either a local confirm modal or get modal content through ajax
          */
@@ -374,13 +397,13 @@ function ModalRemote(modalId) {
                 $(elm).attr('data-confirm-ok'),
                 $(elm).attr('data-confirm-cancel'),
                 $(elm).hasAttr('data-modal-size') ? $(elm).attr('data-modal-size') : 'normal',
-                $(elm).hasAttr('href') ? $(elm).attr('href') : $(elm).attr('data-url'),
+                $(elm).hasAttr('href') ? href : $(elm).attr('data-url'),
                 $(elm).hasAttr('data-request-method') ? $(elm).attr('data-request-method') : 'GET',
                 bulkData
             )
         } else {
             this.doRemote(
-                $(elm).hasAttr('href') ? $(elm).attr('href') : $(elm).attr('data-url'),
+                $(elm).hasAttr('href') ? href : $(elm).attr('data-url'),
                 $(elm).hasAttr('data-request-method') ? $(elm).attr('data-request-method') : 'GET',
                 bulkData
             );

@@ -61,3 +61,50 @@ and you can see <b>Ajax CRUD Generator</b>
 Other Links
 [Free download wordpress theme](https://w3deep.com/wordpress-theme/)
 [Free download html template](https://w3deep.com/html-template/)
+
+-------------
+
+Using modal window for model create/update
+------------------------------------------
+
+You can create a button to update a select2 field with a new item like below, using the `attribute` tag:
+
+````php
+<?= Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/person/create'],
+                ['role'=>'modal-remote','title'=> 'Create new Person','class'=>'btn btn-default form-control',
+                    'attribute' => Html::getInputId($model, 'person_id')
+
+                ]); ?>
+````
+
+The modal window will retrieve the create form. When you save, you can return two parameters (`dataId and dataText`) to update the `attribute`:
+
+````php
+        //Piece of the actionCreate of the PersonaController
+        if($request->isGet){
+                return [
+                    'title'=> "Create new Person",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
+            }else if($model->load($request->post()) && $model->save()){
+                return [
+                    'forceClose'=> true,
+                    'dataId' => $model->person_id,      <------- HERE
+                    'dataText' => $model->name,
+                ];
+            }else{
+                return [
+                    'title'=> "Create new Person",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                ];
+            }
+````
