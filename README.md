@@ -67,17 +67,32 @@ Other Links
 Using modal window for model create/update
 ------------------------------------------
 
-You can create a button to update a select2 field with a new item like below, using the `attribute` tag:
+You can create a button to update a select2 field with a new item like below, using the `attribute` tag.
+Using the two buttons below, you can achieve an `create` and `update` behavior:
 
 ````php
 <?= Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/person/create'],
                 ['role'=>'modal-remote','title'=> 'Create new Person','class'=>'btn btn-default form-control',
+                    'style' => ($model->person_id) ? 'display: none' : '',
                     'attribute' => Html::getInputId($model, 'person_id')
 
                 ]); ?>
 ````
 
-The modal window will retrieve the create form. When you save, you can return two parameters (`dataId and dataText`) to update the `attribute`:
+Or refresh the modified item on select2 field:
+
+````php
+
+ <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['/person/update'],
+                ['role'=>'modal-remote','title'=> Yii::t('app','Edit').' '.Yii::t('app','Person'),'class'=>'btn btn-default form-control','id' => 'person-update', 'tabindex' => -1,
+                    'attribute' => Html::getInputId($model, 'person_id'),
+                    'style' => (!$model->person_id) ? 'display: none' : '',
+                    'type' => 'update',
+
+                ]); ?>                
+````
+
+The modal window will retrieve the `create` or `update` form. When you save, you can return two parameters (`dataId and dataText`) to update the `attribute`:
 
 ````php
         //Piece of the actionCreate of the PersonaController
