@@ -289,6 +289,12 @@ function ModalRemote(modalId) {
                     data
                 );
             });
+
+            $(modalForm).on('submit', function(event){
+                event.preventDefault();
+                modalFormSubmitBtn.click();
+            });
+
         }
     };
 
@@ -351,7 +357,7 @@ function ModalRemote(modalId) {
             }
         );
 
-    }
+    };
 
     /**
      * Open the modal
