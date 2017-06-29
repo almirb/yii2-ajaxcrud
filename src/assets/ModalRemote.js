@@ -296,7 +296,7 @@ function ModalRemote(modalId) {
             });
 
         }
-    };
+    }
 
     /**
      * Show the confirm dialog
