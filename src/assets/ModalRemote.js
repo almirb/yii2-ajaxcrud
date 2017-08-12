@@ -35,6 +35,8 @@ function ModalRemote(modalId) {
 
     this.attribute = null;
 
+    this.aftersave = null;
+
     /**
      * Show the modal
      */
@@ -232,6 +234,12 @@ function ModalRemote(modalId) {
             x.val(response.dataId).trigger('change');
         }
 
+        //Run aftersave event
+        if (this.aftersave && response.dataId) {
+            eval(this.aftersave);
+        }
+
+
         // Close modal if response contains forceClose field
         if (response.forceClose !== undefined && response.forceClose) {
             this.hide();
@@ -391,6 +399,10 @@ function ModalRemote(modalId) {
                 var attributeField =  '#'+$(elm).attr('attribute');
                 href += '&id='+$(attributeField).val();
             }
+        }
+
+        if ($(elm).hasAttr('aftersave')) {
+            this.aftersave = $(elm).attr('aftersave');
         }
 
         /**
