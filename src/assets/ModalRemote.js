@@ -15,9 +15,9 @@ function ModalRemote(modalId) {
 
     this.defaults = {
         okLabel: "OK",
-        executeLabel: "Execute",
-        cancelLabel: "Cancel",
-        loadingTitle: "Loading"
+        executeLabel: "Executar",
+        cancelLabel: "Cancelar",
+        loadingTitle: "Carregando"
     };
 
 
