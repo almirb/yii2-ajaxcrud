@@ -20,7 +20,6 @@ function ModalRemote(modalId) {
         loadingTitle: "Carregando"
     };
 
-
     this.modal = $(modalId);
 
     this.dialog = $(modalId).find('.modal-dialog');
@@ -42,7 +41,8 @@ function ModalRemote(modalId) {
      */
     this.show = function () {
         this.clear();
-        $(this.modal).modal('show');
+        // $(this.modal).modal('show');
+        $(this.modal).appendTo("body").modal('show');
     };
 
     /**

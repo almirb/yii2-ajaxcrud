@@ -72,7 +72,7 @@ Using the two buttons below, you can achieve an `create` and `update` behavior:
 
 ````php
 <?= Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/person/create'],
-                ['role'=>'modal-remote','title'=> 'Create new Person','class'=>'btn btn-default form-control',
+                ['role'=>'modal-remote', 'data-modal' => '#ajaxCrudPrograma', 'title'=> 'Create new Person','class'=>'btn btn-default form-control',
                     'style' => ($model->person_id) ? 'display: none' : '',
                     'attribute' => Html::getInputId($model, 'person_id')
 
@@ -84,7 +84,7 @@ Or refresh the modified item on select2 field:
 ````php
 
  <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['/person/update'],
-                ['role'=>'modal-remote','title'=> Yii::t('app','Edit').' '.Yii::t('app','Person'),'class'=>'btn btn-default form-control','id' => 'person-update', 'tabindex' => -1,
+                ['role'=>'modal-remote', 'data-modal' => '#ajaxCrudPrograma', 'title'=> Yii::t('app','Edit').' '.Yii::t('app','Person'),'class'=>'btn btn-default form-control','id' => 'person-update', 'tabindex' => -1,
                     'attribute' => Html::getInputId($model, 'person_id'),
                     'style' => (!$model->person_id) ? 'display: none' : '',
                     'type' => 'update',
@@ -102,7 +102,7 @@ The modal window will retrieve the `create` or `update` form. When you save, you
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left dismiss-modal']).
                         Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
 
                 ];
@@ -118,7 +118,7 @@ The modal window will retrieve the `create` or `update` form. When you save, you
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left dismiss-modal']).
                         Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
                 ];
             }

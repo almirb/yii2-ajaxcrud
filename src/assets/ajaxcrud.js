@@ -6,18 +6,26 @@
  */
 $(document).ready(function () {
 
+    //Added support for stacked modals
+    var modals = [];
+
     // Create instance of Modal Remote
-    // This instance will be the controller of all business logic of modal
-    // Backwards compatible lookup of old ajaxCrubModal ID
-    if ($('#ajaxCrubModal').length > 0 && $('#ajaxCrudModal').length == 0) {
-        modal = new ModalRemote('#ajaxCrubModal');
-    } else {
+    if ( $("#ajaxCrudModal").length ) {
         modal = new ModalRemote('#ajaxCrudModal');
+        modals['#ajaxCrudModal'] = modal;
     }
 
     // Catch click event on all buttons that want to open a modal
     $(document).on('click', '[role="modal-remote"]', function (event) {
         event.preventDefault();
+
+        var selector = $(this).attr('data-modal') || '#ajaxCrudModal';
+        if (modals[selector]) {
+            modal = modals[selector];
+        } else {
+            modal = new ModalRemote(selector);
+            modals[selector] = modal;
+        }
 
         // Open modal
         modal.open(this, null);
@@ -48,4 +56,18 @@ $(document).ready(function () {
             modal.open(this, selectedIds);
         }
     });
+});
+
+$(document).on('click', '.dismiss-modal', function (event) {
+    $(this).closest('.modal').modal('hide');
+    event.preventDefault();
+});
+
+$(document).on('hidden.bs.modal', '.modal', function (event) {
+    if (typeof tinyMCE !== 'undefined') {
+        tinyMCE.editors = [];
+    }
+    if ($('.modal:visible').length) {
+        $('body').addClass('modal-open');
+    }
 });
