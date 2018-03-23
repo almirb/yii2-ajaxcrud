@@ -236,7 +236,8 @@ function ModalRemote(modalId) {
 
         //Run aftersave event
         if (this.aftersave && response.dataId) {
-            eval(this.aftersave);
+            //eval(this.aftersave);
+            result = new Function("response", this.aftersave).call(this, response);
         }
 
 

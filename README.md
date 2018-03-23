@@ -74,8 +74,8 @@ Using the two buttons below, you can achieve an `create` and `update` behavior:
 <?= Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/person/create'],
                 ['role'=>'modal-remote', 'data-modal' => '#ajaxCrudPrograma', 'title'=> 'Create new Person','class'=>'btn btn-default form-control',
                     'style' => ($model->person_id) ? 'display: none' : '',
-                    'attribute' => Html::getInputId($model, 'person_id')
-
+                    'attribute' => Html::getInputId($model, 'person_id'),
+                    'aftersave' => "$('#".Html::getInputId($model, 'some_field')."').val(response.dataId);",
                 ]); ?>
 ````
 
@@ -88,7 +88,7 @@ Or refresh the modified item on select2 field:
                     'attribute' => Html::getInputId($model, 'person_id'),
                     'style' => (!$model->person_id) ? 'display: none' : '',
                     'type' => 'update',
-
+                    'aftersave' => "$('#".Html::getInputId($model, 'some_field')."').val(response.dataId);",
                 ]); ?>                
 ````
 
