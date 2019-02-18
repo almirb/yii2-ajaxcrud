@@ -285,14 +285,18 @@ function ModalRemote(modalId) {
                 var data;
 
                 //https://github.com/samdark/yii2-cookbook/blob/master/book/forms-activeform-js.md
-                if ($(modalForm).yiiActiveForm !== undefined) {
+                if ($(modalForm).data('yiiActiveForm') !== undefined) {
                     $(modalForm).data('yiiActiveForm').submitting = true;
                     $(modalForm).yiiActiveForm('validate');
 
                     if ($(modalForm).data('yiiActiveForm').validated === false) {
+                        $(instance.modal).scrollTop(0);
                         e.preventDefault();
                         return false;
                     }
+
+                } else {
+                    console.warn("The ID of the ActiveForm wasn't set.");
                 }
 
                 // Test if browser supports FormData which handles uploads
